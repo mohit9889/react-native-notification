@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, YellowBox, FlatList } from "react-native";
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -44,7 +44,7 @@ const Home = (props) => {
                     <Item
                         title="Cart"
                         iconName="shoppingcart"
-                        onPress={() => {props.navigation.navigate("Cart")}}
+                        onPress={() => { props.navigation.navigate("Cart") }}
                     />
                     <Item
                         title="Favorite"
@@ -60,14 +60,14 @@ const Home = (props) => {
         <View style={styles.container}>
             {
                 (availableProducts) ?
-                <FlatList 
-                    style={styles.list}
-                    data={availableProducts}
-                    renderItem={(item) => <Card item={item} /> }
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                :
-                null
+                    <FlatList
+                        style={styles.list}
+                        data={availableProducts}
+                        renderItem={(item) => <Card item={item} />}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                    :
+                    null
             }
         </View>
     );

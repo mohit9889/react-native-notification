@@ -23,3 +23,9 @@ export const addFood = (product) => {
         dispatch({ type: ADDFOOD, product: product })
     }
 }
+
+export const removeFood = (prodID) => {
+    return dispatch => {
+        dispatch({ type: REMOVEFOOD, prodID: prodID })
+    }
+}

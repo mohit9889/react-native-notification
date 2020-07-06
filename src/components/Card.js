@@ -17,9 +17,8 @@ const Card = (props) => {
             let action = productsActions.addFood(availableProducts[index]);
             dispatch(action);
         } else {
-            console.log("Already in cart...")
-        }
-        
+            console.log("Already in cart...");
+        } 
     }
 
     return (

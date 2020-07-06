@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Button, FlatList, AsyncStorage } from "react-native";
+import { StyleSheet, View, Button, FlatList, AsyncStorage, TouchableOpacity, Text } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
@@ -23,30 +23,20 @@ const Cart = () => {
             Permissions.NOTIFICATIONS
         );
         let finalStatus = existingStatus;
-
-        // only ask if permissions have not already been determined, because
-        // iOS won't necessarily prompt the user a second time.
         if (existingStatus !== 'granted') {
-            // Android remote notification permissions are granted during the app
-            // install, so this will only ask on iOS
             const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
             finalStatus = status;
         }
-
-        // Stop here if the user did not grant permissions
         if (finalStatus !== 'granted') {
             return;
         }
-
         try {
-            // Get the token that uniquely identifies this device
             let token = await Notifications.getExpoPushTokenAsync();
-            console.log("[NOTIFICATION TOKEN]",token.data);
-            // POST the token to your backend server from where you can retrieve it to send push notifications.
+            console.log("[NOTIFICATION TOKEN]", token.data);
             firebase
-        .database()
-        .ref('users/' + userId + '/push_token')
-        .set(token.data);
+                .database()
+                .ref('users/' + userId + '/push_token')
+                .set(token.data);
         } catch (error) {
             console.log(error);
         }
@@ -60,7 +50,7 @@ const Cart = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                to: 'ExponentPushToken[vUA9RfPK_RPLFOIiDFOIYs]',
+                to: 'ExponentPushToken[SSP6YxATpVmdtb-cNJBcWL]',
                 sound: 'default',
                 title: 'Order',
                 body: 'Here your new order.'
@@ -87,8 +77,9 @@ const Cart = () => {
                 renderItem={(item) => <CartItem item={item} />}
                 keyExtractor={(item, index) => index.toString()}
             />
-
-            <Button onPress={sendPushNotification} color="#212121" title={"Payment"} />
+            <TouchableOpacity onPress={sendPushNotification} style={styles.button}>
+                <Text style={styles.buttonText}>Payment</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -100,7 +91,17 @@ const styles = StyleSheet.create({
     },
     list: {
         padding: 20
-    }
+    },
+    button: {
+        height: 50,
+        backgroundColor: "#212121",
+        justifyContent: "center",
+        alignContent: "center",
+    },
+    buttonText: {
+        color: "white",
+        textAlign: "center",
+    },
 });
 
 export default Cart;

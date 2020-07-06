@@ -13,7 +13,10 @@ export default (state = initialState, action) => {
         products: state.products.concat(action.products)
       };
     case REMOVEFOOD:
-      return{};
+      return{
+        ...state,
+        cart: state.cart.filter(item => item.idCategory !== action.prodID)
+      };
     case ADDFOOD:
       return{
         ...state,
