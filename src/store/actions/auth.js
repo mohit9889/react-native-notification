@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import firebase from "firebase";
 
 export const LOGIN = 'LOGIN';
 export const SIGNUP = "SIGNUP"
@@ -27,15 +28,23 @@ export const signup = (email, password) => {
             })
         });
 
-       console.log(email, password);
         if (!response.ok) {
             throw new Error('Can not process your request...');
         }
 
         const resData = await response.json();
-        //console.log(resData);
+        
+        const userData = {
+            email: resData.email,
+            uid: resData.localId
+        }
 
-        dispatch({ type: SIGNUP,  });
+        firebase.database().ref('/users/'+userData.uid).set({
+            email: userData.email,
+            created_at: Date.now(),
+        })
+
+        dispatch({ type: SIGNUP });
     }
 }
 
@@ -61,7 +70,15 @@ export const login = (email, password) => {
         }
 
         const resData = await response.json();
-        //console.log(resData);
+        const userData = {
+            email: resData.email,
+            uid: resData.localId
+        }
+        
+        firebase.database().ref('/users/'+userData.uid).update({
+            last_logged_in: Date.now(),
+        })
+        
 
         dispatch(
             authenticate(

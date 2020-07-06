@@ -11,6 +11,11 @@ import productReducer from './src/store/reducers/products';
 
 import Navigation from "./src/navigation/navigation";
 
+import * as firebase from "firebase";
+import {firebaseConfig} from "./config";
+firebase.initializeApp(firebaseConfig);
+
+
 // Redux Store
 const rootReducer = combineReducers({
   auth: authReducer,

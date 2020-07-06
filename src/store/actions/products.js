@@ -13,7 +13,6 @@ export const setFood = () => {
         }
 
         const resData = await response.json();
-        //console.log(resData.categories);
 
         dispatch({ type: SETFOOD, products: resData.categories });
     }
